@@ -1,0 +1,14 @@
+<%- include('Header_Main.ejs') %>
+<% if (result && result.length) { %>
+    <h2 style="margin-left: .5em;">List Of Users you are following :- </h2>
+    <% for (let i = 0; i < result.length; i++) { %>
+        <div>
+            <p>
+                <%= result[i].username %>
+            </p>
+            <div><%= result[i].about %> | <a href="/follow/<%= result[i].uid %>">Follow</a></div>
+        </div>
+    <% } %>
+<% } else { %>
+    <p>No users found.</p>
+<% } %>
