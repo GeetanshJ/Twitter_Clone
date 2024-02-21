@@ -1,0 +1,13 @@
+<%- include('Header_Main.ejs') %>
+
+<% if (result && result.length) { %>
+    <h2 style="margin-left: .5em; color: #1da1f2; font-size: 1.5em;">Search Results:</h2>
+    <% for (let i = 0; i < result.length; i++) { %>
+        <div style="display: inline-block; margin-left: 0.8em; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 10px; margin-bottom: 10px;">
+            <p style="margin: 0; font-size: 1.2em; color: #333;"><%= result[i].username %> - <%= result[i].about %></p>
+            <a href="/follow/<%= result[i].uid %>" style="text-decoration: none; display: inline-block; padding: 8px 15px; margin-top: 5px; background-color: #1da1f2; color: #fff; border-radius: 5px; font-weight: bold; cursor: pointer; text-align: center; transition: background-color 0.3s ease;">Follow</a>
+        </div>
+    <% } %>
+<% } else { %>
+    <p style="color: #777;margin-left: 0.8em;font-size: 18px;">No users found.</p>
+<% } %>
