@@ -28,7 +28,7 @@ app.post("/login", (req, res) => {
     } else {
       req.session.uid = result[0].uid;
       req.session.un = result[0].username;
-      let sql1 ="SELECT tweet.*, user.username FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR user.uid = ? ORDER BY tweet.datetime DESC";
+      let sql1 ="SELECT tweet.*, user.* FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE user.uid = ? ORDER BY tweet.datetime DESC";
       db.query(sql1, [req.session.uid, req.session.uid],(error, result, frields) => {
         if (error) throw error;
         res.render("home",{mssg:"",result_tweets:result});

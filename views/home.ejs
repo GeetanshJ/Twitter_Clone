@@ -6,237 +6,223 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Twitter Home Page</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f8fa;
-            color: #333;
-        }
+        /* General styles */
 
-        header {
-            background-color: #1da1f2;
-            color: white;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f8fa;
+    color: #333;
+    overflow-x: hidden; /* Add this line to prevent horizontal overflow */
+}
 
-        .logout-link {
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border: 1px solid white;
-            border-radius: 5px;
-            font-weight: bold;
-        }
+header {
+    background-color: #1da1f2;
+    color: white;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        .main-container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            border-radius: 15px;
-        }
+.logout-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border: 1px solid white;
+    border-radius: 5px;
+    font-weight: bold;
+}
 
-        .left-section {
-            width: 25%;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+.main-container {
+    display: flex;
+    width: 90%; /* Set main container width to 100% */
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 
-        .logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-        }
+}
 
-        .search-box {
-            width: calc(100% - 40px);
-            padding: 10px;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+.left-section {
+    flex: 1; /* Take up remaining space */
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-        .search-button {
-            background-color: #1da1f2;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
+.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
 
-        .search-button:hover {
-            background-color: #1471b7;
-        }
+.search-box {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-        .right-section {
-            width: 75%;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-left: 20px;
-        }
+.search-button {
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
 
-        .upper-part {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
+.search-button:hover {
+    background-color: #1471b7;
+}
 
-        .navigation-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            width: 50%;
-        }
+.right-section {
+    flex: 2; /* Take up twice as much space as left section */
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
 
-        .navigation-list li {
-            margin-bottom: 40px;
-        }
+.upper-part {
+    flex-wrap: wrap;
 
-        .navigation-list a {
-            text-decoration: none;
-            color: #1da1f2;
-            padding: 8px;
-            border-radius: 5px;
-            background-color: #e1f5fe;
-            transition: background-color 0.3s ease;
-        }
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
 
-        .navigation-list a:hover {
-            background-color: #b3e0f2;
-        }
+.navigation-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap; /* Add this line to wrap the navigation items */
+}
 
-        .tweet-box {
-            margin-top: 20px;
-        }
+.navigation-list li {
+    margin-right: 30px;
+    margin-bottom:30px; /* Add margin-bottom to create space between rows */
+}
 
-        textarea {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: none;
-        }
+.navigation-list a {
+    flex-wrap: wrap;
 
-        .tweet-button {
-            background-color: #1da1f2;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-        }
+    text-decoration: none;
+    color: #1da1f2;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #e1f5fe;
+    transition: background-color 0.3s ease;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
 
-        .tweet-button:hover {
-            background-color: #1471b7;
-        }
+.navigation-list a:hover {
+    background-color: #b3e0f2;
+}
 
-    
-
-        /* Styles for tweet username and post */
-
-
-        /* Styles for message when no tweets are posted */
-        .no_tweets_message {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 10px;
-        }
-
-        /* Styles for the "Tweet Now" button */
-        .tweet_now_button {
-            background-color: #4CAF50;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-    
-
-        /* Additional styling to make the button stand out */
-        .tweet_now_button:hover {
-            background-color: #45a049;
-        }
-
-
-
-        .tweets-section {
+.tweet-box {
     margin-top: 20px;
 }
 
-.tweet-display-title {
-    font-size: 24px;
-    color: #1da1f2;
+textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
     margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none;
 }
 
-.tweets-container {
-    display: flex;
-    flex-direction: column;
+.tweet-button {
+    background-color: #1da1f2;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.tweet-button:hover {
+    background-color: #1471b7;
 }
 
 .tweet {
+    width: 30%;
     border: 1px solid #ccc;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
+    padding: 20px;
     background-color: #fff;
-}
-
-.tweet-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
+    color: #333;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin: 20px;
 }
 
 .profile-pic {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     margin-right: 10px;
 }
 
-.tweet-info {
-    display: flex;
-    flex-direction: column;
+.tweet-content {
+    font-size: 14px;
+    color: #6e6969;
+
 }
 
 .username {
     font-weight: bold;
+    font-size: 14px;
 }
 
 .timestamp {
     color: #777;
-    font-size: 12px;
+    font-size: 10px;
 }
 
-.tweet-content {
-    font-size: 16px;
+.tweets-container  {
+    margin: 0 auto;
+    justify-content: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+.tweets-section {
+    margin-top: 20px;
+    background-color: #f0f0f0;
     color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-.no-tweets-message {
-    font-size: 16px;
-    color: #555;
+.tweet-display-title{
+    text-align: center;
 }
-
     </style>
 </head>
 
@@ -291,25 +277,27 @@
     <div class="tweets-section">
         <h2 class="tweet-display-title">Tweets</h2>
         <div class="tweets-container">
-            <% if(result_tweets.length > 0) { %>
+            <% if(result_tweets.length> 0) { %>
                 <% for(let i=0; i < result_tweets.length; i++) { %>
                     <div class="tweet">
                         <div class="tweet-header">
                             <div class="tweet-info">
-                                <span class="username"><%= result_tweets[i].username %></span>
+                                <span class="username">
+                                    <%= result_tweets[i].username %>
+                                </span>
                             </div>
                         </div>
                         <div class="tweet-content">
                             <%= result_tweets[i].content %>
                         </div>
                     </div>
-                <% } %>
-            <% } else { %>
-                <p class="no-tweets-message">No tweets posted</p>
-            <% } %>
+                    <% } %>
+                        <% } else { %>
+                            <p class="no-tweets-message">No tweets posted</p>
+                            <% } %>
         </div>
     </div>
-    
+
 
 </body>
 
