@@ -146,17 +146,10 @@
             background-color: #1471b7;
         }
 
-        .tweet_wrap {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
+    
 
         /* Styles for tweet username and post */
-        .tun {
-            font-size: 14px;
-            color: #333;
-        }
+
 
         /* Styles for message when no tweets are posted */
         .no_tweets_message {
@@ -175,10 +168,75 @@
             cursor: pointer;
         }
 
+    
+
         /* Additional styling to make the button stand out */
         .tweet_now_button:hover {
             background-color: #45a049;
         }
+
+
+
+        .tweets-section {
+    margin-top: 20px;
+}
+
+.tweet-display-title {
+    font-size: 24px;
+    color: #1da1f2;
+    margin-bottom: 10px;
+}
+
+.tweets-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.tweet {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.tweet-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.tweet-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.timestamp {
+    color: #777;
+    font-size: 12px;
+}
+
+.tweet-content {
+    font-size: 16px;
+    color: #333;
+}
+
+.no-tweets-message {
+    font-size: 16px;
+    color: #555;
+}
+
     </style>
 </head>
 
@@ -219,24 +277,40 @@
                         <textarea id="tweet" name="tweet" rows="4" placeholder="What's happening?" required></textarea>
                         <button type="submit" class="tweet-button">Tweet</button>
                     </form>
+
+                    <div style="color:#45a049;font-size: 25px;">
+                        <%=mssg%>
+                    </div>
                 </div>
+
+
             </div>
         </div>
     </div>
-    <div>
-        <h2 class="tweet-display-title">Tweets :- </h2>
-        <% if(result_tweets.length> 0) { %>
-            <% for(let i=0; i < result_tweets.length; i++) { %>
-                <div class="tweet_wrap">
-                    <div class="tun">
-                        <%= result_tweets[i].username %> ==> <%= result_tweets[i].post %>
+
+    <div class="tweets-section">
+        <h2 class="tweet-display-title">Tweets</h2>
+        <div class="tweets-container">
+            <% if(result_tweets.length > 0) { %>
+                <% for(let i=0; i < result_tweets.length; i++) { %>
+                    <div class="tweet">
+                        <div class="tweet-header">
+                            <div class="tweet-info">
+                                <span class="username"><%= result_tweets[i].username %></span>
+                            </div>
+                        </div>
+                        <div class="tweet-content">
+                            <%= result_tweets[i].content %>
+                        </div>
                     </div>
-                </div>
                 <% } %>
-                    <% } else { %>
-                        <p>No tweets posted</p>
-                        <% } %>
+            <% } else { %>
+                <p class="no-tweets-message">No tweets posted</p>
+            <% } %>
+        </div>
     </div>
+    
+
 </body>
 
 </html>
