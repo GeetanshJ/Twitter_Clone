@@ -20,7 +20,7 @@ app.post("/login", (req, res) => {
     sql = `select * from user where email = '${email}' and password = '${password}' and status = 1 and softdelete = 0`;
   } else {
     sql = `select * from user where mobile = ${email} and password = '${password}' and status = 1 and softdelete = 0`;
-  }
+  } 
   db.query(sql, (error, result, frields) => {
     if (error) throw err;
     if (result.length == 0) {
