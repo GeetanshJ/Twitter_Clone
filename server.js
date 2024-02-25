@@ -3,9 +3,15 @@ const app = express();
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const db = require("./database");
+var multer = require('multer');
 app.use(session({ secret: "g#a%t&v%i#t%" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads')
+  }
+})
 app.get("/", (req, res) => {
   let msg = "";
   if (req.session.msg != "") {
@@ -20,7 +26,7 @@ app.post("/login", (req, res) => {
     sql = `select * from user where email = '${email}' and password = '${password}' and status = 1 and softdelete = 0`;
   } else {
     sql = `select * from user where mobile = ${email} and password = '${password}' and status = 1 and softdelete = 0`;
-  } 
+  }
   db.query(sql, (error, result, frields) => {
     if (error) throw err;
     if (result.length == 0) {
@@ -28,10 +34,10 @@ app.post("/login", (req, res) => {
     } else {
       req.session.uid = result[0].uid;
       req.session.un = result[0].username;
-      let sql1 ="SELECT tweet.*, user.* FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE user.uid = ? ORDER BY tweet.datetime DESC";
-      db.query(sql1, [req.session.uid, req.session.uid],(error, result, frields) => {
+      let sql1 = "SELECT tweet.*, user.* FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE user.uid = ? ORDER BY tweet.datetime DESC";
+      db.query(sql1, [req.session.uid, req.session.uid], (error, result, frields) => {
         if (error) throw error;
-        res.render("home",{mssg:"",result_tweets:result});
+        res.render("home", { mssg: "", result_tweets: result });
       });
     }
   });
@@ -98,16 +104,16 @@ app.get("/logout", (req, res) => {
 app.get("/home", (req, res) => {
   if (req.session.uid != "") {
     let msg = "";
-      msg = req.session.msg;
+    msg = req.session.msg;
 
-      let sql ="SELECT tweet.*, user.username FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR user.uid = ? ORDER BY tweet.datetime DESC";
-      db.query(sql,[req.session.uid, req.session.uid],(err, result, fields) => {
-          res.render("home", { mssg:"Tweet Posted",result_tweets: result });
-        }
-      );
-  
+    let sql = "SELECT tweet.*, user.username FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR user.uid = ? ORDER BY tweet.datetime DESC";
+    db.query(sql, [req.session.uid, req.session.uid], (err, result, fields) => {
+      res.render("home", { mssg: "Tweet Posted", result_tweets: result });
+    }
+    );
+
   }
-  
+
   else {
     req.session.msg = "Please login first to view home page!";
     res.redirect("/");
@@ -119,17 +125,17 @@ app.post('/tweet-submit', (req, res) => {
   let sql = "insert into tweet (uid,content,datetime) values(?,?,?)"
   let date = new Date();
   let month = date.getMonth() + 1;
-  let date_time = date.getFullYear() + "-" + month + "-" + date.getDate() +" "+ date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-  db.query(sql,[req.session.uid,tweet,date_time],(err,result) => {
+  let date_time = date.getFullYear() + "-" + month + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+  db.query(sql, [req.session.uid, tweet, date_time], (err, result) => {
     if (err) {
       console.log(err);
     }
-    
+
     else {
-      if(result.insertId > 0) {
+      if (result.insertId > 0) {
         res.redirect("/home");
       } else {
-        res.render('home', { mssg: "Unable to post tweet!"});
+        res.render('home', { mssg: "Unable to post tweet!" });
       }
     }
   });
@@ -143,11 +149,15 @@ app.get("/following", (req, res) => {
     res.render("following_list", { following_result: result });
   });
 });
+
+
 app.get("/search", (req, res) => {
   const search_str = req.query["search"];
   let sql = "select * from user where username like '%" + search_str + "%'";
   db.query(sql, [search_str], (err, result, fields) => {
-    res.render("search_result", { result: result });
+    res.render("search_result", { result: result }); // Pass the 'result' variable to the template
   });
 });
+
+
 app.listen(9000, () => console.log("Server running at http://localhost:9000"));
