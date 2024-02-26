@@ -8,10 +8,15 @@ app.use(session({ secret: "g#a%t&v%i#t%" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 const verify_Mail = require('./nodemailer');
+app.use(express.static(__dirname+"/public"))
+var multer = require('multer');
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/uploads')
+    cb(null, 'uploads/')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() +"--"+file.originalname)
   }
 })
 app.get("/", (req, res) => {
@@ -141,14 +146,26 @@ app.get("/logout", (req, res) => {
 
 
 
-
-app.post('/tweet-submit', (req, res) => {
+const storage_config = multer({storage:storage})
+app.post('/tweet-submit', storage_config.single("tweet_img"),(req, res) => {
   const tweet = req.body.tweet;
-  let sql = "insert into tweet (uid,content,datetime) values(?,?,?)"
+  var filename = "";
+  var mimetype = "";
+
+  try{
+    filename=req.file.filename;
+    mimetype=req.file.mimetype;
+  }
+
+  catch(err){
+    console.log(err);
+  }
+
+  let sql = "insert into tweet (uid,content,datetime,imagevdo_name,type) values(?,?,?,?,?)"
   let date = new Date();
   let month = date.getMonth() + 1;
   let date_time = date.getFullYear() + "-" + month + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-  db.query(sql, [req.session.uid, tweet, date_time], (err, result) => {
+  db.query(sql, [req.session.uid, tweet, date_time,filename,mimetype], (err, result) => {
     if (err) {
       console.log(err);
     }

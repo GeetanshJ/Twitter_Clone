@@ -44,23 +44,25 @@
             /* align items to the top */
         }
 
-        .left-section{
+        .left-section {
             padding: 20px;
-            width:20%;
+            width: 20%;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .right-section{
+
+        .right-section {
             padding: 20px;
-            width:50%;
+            width: 50%;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .followers-section {
             padding: 17px;
-            width:19%;
+            width: 19%;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -130,7 +132,7 @@
         }
 
         .tweets-section {
-            width:auto;
+            width: auto;
             background-color: #f0f0f0;
             color: #333;
             padding: 20px;
@@ -152,14 +154,14 @@
 
         .tweets-container {
             display: flex;
-            width:90%;
+            width: 90%;
             flex-wrap: wrap;
             /* Ensure tweets wrap onto next line */
             justify-content: space-between;
         }
 
         .tweet {
-            width:90%;
+            width: 90%;
             /* Adjust for 2 tweets per row */
             border: 1px solid #ccc;
             padding: 20px;
@@ -265,9 +267,11 @@
         <!-- Middle Section -->
         <div class="right-section">
             <div class="tweet-box">
-                <form action="/tweet-submit" method="post">
+                <form action="/tweet-submit" method="post" enctype="multipart/form-data">
                     <label for="tweet">Tweet:</label>
                     <textarea id="tweet" name="tweet" rows="4" placeholder="What's happening?" required></textarea>
+                    <img src="../public/img/img-icon.png" id="icon" />
+                    <input type="file" id="tweet_img" name="tweet_img" />
                     <button type="submit" class="tweet-button">Tweet</button>
                 </form>
                 <div style="color:#45a049;font-size: 25px;">
@@ -309,7 +313,7 @@
                 Following list
             </div>
             <div class="search-box">
-                <input type="text" id="searchField" name="search" placeholder="Search">
+                <input type="text" name="search" placeholder="Search">
                 <button type="button" class="search-button">Search</button>
             </div>
         </div>
@@ -338,25 +342,34 @@
                                     <% if (search===true) { %>No users found.<% } %>
                                 </p>
                                 <% } %>
-            </div>
+                                             
+            </div>
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
+        $(document).ready(function () {
+            $("#icon").click(function () {
+                $("#tweet_img").trigger('click');
+            });
+
+        })
         const searchButton = document.querySelector('.search-button');
         const searchPopup = document.querySelector('.search-popup');
         const closeBtn = document.querySelector('.close-btn');
-        const field =  document.querySelector("#searchField");
 
-        searchButton.addEventListener('click', async() => {
-
-            const response = await fetch(`/search?username=${field}`)
+        searchButton.addEventListener('click', async () => {
+            const response = await fetch("/search?username=")
             searchPopup.style.display = 'block';
         });
 
         closeBtn.addEventListener('click', () => {
             searchPopup.style.display = 'none';
         });
+
+
     </script>
 </body>
 
