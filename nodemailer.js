@@ -1,27 +1,31 @@
-var nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 
-var transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: "jaingeetansh@gmail.com",
-        pass: "bludpdclxjlhbhiu",
-    },
-});
-
-var mailOptions = {
-    from: "jaingeetansh@gmail.com",
-    to: "haraksh0541.be21@chitkara.edu.in",
-    subject: "Sending Email using Node.js",
-    text: "hi",
-};
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Email sent: " + info.response);
-        }
+async function sendVerificationEmail(email_to) {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: false,
+        auth: {
+            user: "jaingeetansh@gmail.com",
+            pass: "bludpdclxjlhbhiu",
+        },
     });
+
+    const info = await transporter.sendMail({
+        to: email_to,
+        from: "jaingeetansh@gmail.com",
+        subject: "Verify your email!",
+        html: "<b>Hi, <br> Please click on the link to verify your email id :- <br> <a href=\"http://localhost:9000?" + email_to + "\">Click here</a>"
+    });
+    if (info.messageId) {
+        return true;
+    } else {
+        return false;
+    }
+}
+console.log("Mail sent successfully..!");
+module.exports = sendVerificationEmail
+
+
 
