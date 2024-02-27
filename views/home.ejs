@@ -132,6 +132,7 @@
         }
 
         .tweets-section {
+            margin-top: 50px;
             width: auto;
             background-color: #f0f0f0;
             color: #333;
@@ -289,11 +290,16 @@
                                     <div class="tweet-info">
                                         <span class="username">
                                             <%= result_tweets[i].username %>
+
                                         </span>
                                     </div>
                                 </div>
                                 <div class="tweet-content">
                                     <%= result_tweets[i].content %>
+                                </div><br>
+                                <div style = "width:100%;heigth:100%">
+                                    <img src="<%=result_tweets[i].imagevdo_name%>" style = "width:100%;heigth:100%"  alt=""/>
+
                                 </div>
                             </div>
                             <% } %>
@@ -312,18 +318,12 @@
             <div class="following-list">
                 Following list
             </div>
-            <div class="search-box">
-                <input type="text" name="search" placeholder="Search">
-                <button type="button" class="search-button">Search</button>
+            <div class="upper-part">
+                <form action="/search" method="get">
+                    <input type="text" name="search" placeholder="Search" class="search-box">
+                    <button type="submit" class="search-button">Search</button>
+                </form>
             </div>
-        </div>
-    </div>
-
-    <div class="search-popup" style="display: none;">
-        <div class="search-popup-content">
-            <!-- Add your search pop-up content here -->
-            <span class="close-btn">&times;</span>
-            <!-- Example content -->
             <div class="search-result">
                 <% if (result && result.length) { %>
                     <h2 style="margin-left: .5em; color: #1da1f2; font-size: 1.5em;">Search Results:</h2>
@@ -331,7 +331,7 @@
                         <div
                             style="display: flex;justify-content: center;align-items: center;gap: 20px; margin-left: 0.8em; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); padding: 10px; margin-bottom: 10px;">
                             <p style="margin: 0; font-size: 1.2em; color: #333;">
-                                <%= result[i].username %> - <%= result[i].content %>
+                                <%= result[i].username %> - <%= result[i].about %>
                             </p>
                             <a href="/follow/<%= result[i].uid %>"
                                 style="text-decoration: none; display: inline-block; padding: 5px 10px; margin-top: 5px; background-color: #1da1f2; color: #fff; border-radius: 5px; font-weight: bold; cursor: pointer; text-align: center; transition: background-color 0.3s ease;">Follow</a>
@@ -342,10 +342,13 @@
                                     <% if (search===true) { %>No users found.<% } %>
                                 </p>
                                 <% } %>
-                                             
             </div>
+           
+            
         </div>
     </div>
+
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -356,18 +359,17 @@
             });
 
         })
-        const searchButton = document.querySelector('.search-button');
-        const searchPopup = document.querySelector('.search-popup');
-        const closeBtn = document.querySelector('.close-btn');
+        // const searchButton = document.querySelector('.search-button');
+        // const searchPopup = document.querySelector('.search-popup');
+        // const closeBtn = document.querySelector('.close-btn');
 
-        searchButton.addEventListener('click', async () => {
-            const response = await fetch("/search?username=")
-            searchPopup.style.display = 'block';
-        });
+        // searchButton.addEventListener('click', () => {
+        //     searchPopup.style.display = 'block';
+        // });
 
-        closeBtn.addEventListener('click', () => {
-            searchPopup.style.display = 'none';
-        });
+        // closeBtn.addEventListener('click', () => {
+        //     searchPopup.style.display = 'none';
+        // });
 
 
     </script>
