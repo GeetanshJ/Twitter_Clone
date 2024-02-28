@@ -258,7 +258,7 @@
                 alt="Twitter Logo" class="logo">
             <ul class="navigation-list">
                 <li><a href="/home">Home</a></li>
-                <li><a href="/uprofile">Profile</a></li>
+                <li><a href="/profile">Profile</a></li>
                 <li><a href="/followers">Followers</a></li>
                 <li><a href="/following">Following</a></li>
                 <li><a href="/logout">Logout</a></li>
@@ -333,8 +333,10 @@
                             <p style="margin: 0; font-size: 1.2em; color: #333;">
                                 <%= result[i].username %> - <%= result[i].about %>
                             </p>
+                            <form action="/follow/" method="get">
                             <a href="/follow/<%= result[i].uid %>"
                                 style="text-decoration: none; display: inline-block; padding: 5px 10px; margin-top: 5px; background-color: #1da1f2; color: #fff; border-radius: 5px; font-weight: bold; cursor: pointer; text-align: center; transition: background-color 0.3s ease;">Follow</a>
+                            </form>
                         </div>
                         <% } %>
                             <% } else { %>
@@ -343,7 +345,7 @@
                                 </p>
                                 <% } %>
             </div>
-           
+        
             
         </div>
     </div>

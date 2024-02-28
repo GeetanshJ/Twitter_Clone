@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Followers List</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #1da1f2, #e1f5f); /* Gradient background from #1da1f2 to #e1f5f */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            background-color: #1da1f2; /* Background color for h1 */
+            padding: 10px; /* Padding for h1 */
+            border-radius: 5px; /* Border radius for h1 */
+        }
+
+        .followers-list {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+
+        .user-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .user-item {
+            background-color: #fff;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .user-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .no-users {
+            text-align: center;
+            color: #fff;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Followers List</h1>
+        <div class="followers-list">
+            <% if (followersList.length > 0) { %>
+            <ul class="user-list">
+                <% followersList.forEach(user => { %>
+                <li class="user-item"><%= user.username %></li>
+                <% }); %>
+            </ul>
+            <% } else { %>
+            <p class="no-users">No users found in the followers list.</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>

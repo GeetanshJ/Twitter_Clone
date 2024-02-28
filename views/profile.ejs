@@ -1,0 +1,48 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+</head>
+
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f5f8fa; display: flex; flex-direction: column; align-items: center;">
+
+    <div style="width: 60%; background-color: #ffffff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); box-sizing: border-box; padding: 20px; margin-top: 20px;">
+
+        <h2 style="font-size: 24px; margin-bottom: 20px; font-weight: bold; text-align: center;">Edit Your Profile
+        </h2>
+
+        <form action="/update_profile" method="POST">
+            <div style="margin-bottom: 20px;">
+                <label for="firstName" style="display: block; font-size: 16px; margin-bottom: 5px;">First Name:</label>
+                <input type="text" id="firstName" name="fname" style="width: calc(100% - 20px); padding: 10px; border: 1px solid #1da1f2; border-radius: 5px; font-size: 14px; box-sizing: border-box;" required value="<%= profile_Data[0].fname %>">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label for="middleName" style="display: block; font-size: 16px; margin-bottom: 5px;">Middle Name:</label>
+                <input type="text" id="middleName" name="mname" style="width: calc(100% - 20px); padding: 10px; border: 1px solid #1da1f2; border-radius: 5px; font-size: 14px; box-sizing: border-box;" value="<%= profile_Data[0].mname %>">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label for="lastName" style="display: block; font-size: 16px; margin-bottom: 5px;">Last Name:</label>
+                <input type="text" id="lastName" name="lname" style="width: calc(100% - 20px); padding: 10px; border: 1px solid #1da1f2; border-radius: 5px; font-size: 14px; box-sizing: border-box;" required value="<%= profile_Data[0].lname %>">
+            </div>
+
+            
+
+            <div style="margin-bottom: 20px;">
+                <label for="aboutYou" style="display: block; font-size: 16px; margin-bottom: 5px;">Tell Others About
+                    You:</label>
+                <textarea id="aboutYou" name="about_user" style="width: calc(100% - 20px); padding: 10px; border: 1px solid #1da1f2; border-radius: 5px; font-size: 14px; resize: vertical; box-sizing: border-box;"><%= profile_Data[0].about %></textarea>
+            </div>
+
+            <button type="submit" style="background-color: #1da1f2; color: #ffffff; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>
