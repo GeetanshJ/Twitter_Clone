@@ -56,7 +56,7 @@ app.get("/search", (req, res) => {
   });
 });
 
-// Login route 
+// Login route
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   let sql = "";
@@ -74,8 +74,8 @@ app.post("/login", (req, res) => {
     else {
       req.session.uid = result[0].uid;
       req.session.un = result[0].username;
-      let sql1 = "SELECT tweet.*, user.* FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR tweet.content LIKE CONCAT('%', ?, '%') OR tweet.uid IN (SELECT following_user_id FROM following WHERE following_user_id = ?) ORDER BY tweet.datetime DESC;";
-      db.query(sql1, [req.session.uid, req.session.un, req.session.uid], (error, result, fields) => {
+      const sql1 = "SELECT tweet.*, user.username FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR tweet.uid IN (SELECT following_user_id FROM following WHERE uid = ?)  OR tweet.content LIKE CONCAT('%@', ?, '%') ORDER BY tweet.datetime DESC;";
+      db.query(sql1, [req.session.uid, req.session.uid, req.session.un], (error, result, fields) => {
         if (error) throw error;
 
         else {
@@ -170,11 +170,13 @@ app.post("/tweet-submit", upload.single("tweet_img"), (req, res) => {
 app.get("/home", (req, res) => {
   if (req.session.uid) {
     let msg = req.session.msg || "";
-    const sql = "SELECT tweet.*, user.username FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR tweet.content LIKE CONCAT('%', ?, '%') OR tweet.uid IN (SELECT following_user_id FROM following WHERE following_user_id = ?) ORDER BY tweet.datetime DESC";
+    const sql = "SELECT tweet.*, user.username FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ?  OR tweet.uid IN (SELECT following_user_id FROM following WHERE uid = ?)  OR tweet.content LIKE CONCAT('%@', ?, '%') ORDER BY tweet.datetime DESC;";
+  
     db.query(sql, [req.session.uid, req.session.un, req.session.uid], (err, result) => {
       if (err) {
         console.error(err);
-        res.status(500).send("Internal Server Error");
+
+        res.send("Internal Server Error");
       } else {
         res.render("home", { result_tweets: result, result: [], search: false, mssg: msg });
       }
@@ -200,7 +202,7 @@ app.get('/profile',(req,res) => {
       }
   })
 })
-
+ 
 app.post('/update_profile',(req,res) => {
   const {fname,mname,lname,about_user} = req.body
   let sql = "update user set fname = ?, mname = ?, lname = ?, about = ? where uid = ?"
@@ -275,3 +277,8 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+
+//  select count(*) from following where uid=?;
+//  select count(*) from following where follow_uid=?;
