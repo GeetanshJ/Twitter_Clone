@@ -133,7 +133,7 @@
 
         .tweets-section {
             margin-top: 50px;
-            width: auto;
+            width: 100%;
             background-color: #f0f0f0;
             color: #333;
             padding: 20px;
@@ -162,7 +162,7 @@
         }
 
         .tweet {
-            width: 90%;
+            width: 100%;
             /* Adjust for 2 tweets per row */
             border: 1px solid #ccc;
             padding: 20px;
@@ -247,7 +247,9 @@
 
 <body>
     <header>
-        <h1>Welcome To Twitter Home Page</h1>
+        <h1>
+            <%=un%>
+        </h1>
         <a href="/logout" class="logout-link">Logout</a>
     </header>
 
@@ -283,30 +285,39 @@
             <div class="tweets-section">
                 <h2 class="tweet-display-title">Tweets</h2>
                 <div class="tweets-container">
-                    <% if(result_tweets.length> 0) { %>
-                        <% for(let i=0; i < result_tweets.length; i++) { %>
+                    <% if (result_tweets.length > 0) { %>
+                        <% for (let i = 0; i < result_tweets.length; i++) { %>
                             <div class="tweet">
                                 <div class="tweet-header">
                                     <div class="tweet-info">
                                         <span class="username">
                                             <%= result_tweets[i].username %>
-
                                         </span>
                                     </div>
                                 </div>
                                 <div class="tweet-content">
                                     <%= result_tweets[i].content %>
-                                </div><br>
-                                <div style = "width:100%;heigth:100%">
-                                    <img src="<%=result_tweets[i].imagevdo_name%>" style = "width:100%;heigth:100%"  alt=""/>
-
+                                    <form action="/likes/" method="get">
+                                        <a href="/likes/<%= result_tweets[i].tid %>">Like</a>
+                                    </form>
+                                    <span>Total likes: <%= tlike[i].likeCount %></span>
+                                </div>
+                                <br>
+                                <div style="width:100%;height:100%">
+                                    <% if (result_tweets[i].type === "video/mp4" || result_tweets[i].type === "video/webm" || result_tweets[i].type === "video/ogg") { %>
+                                        <video src="<%= result_tweets[i].imagevdo_name %>" type="<%= result_tweets[i].type %>" controls style="height: 25rem;width:25rem"></video>
+                                    <% } else if (result_tweets[i].type === "image/jpeg" || result_tweets[i].type === "image/jpg" || result_tweets[i].type === "image/png" || result_tweets[i].type === "image/gif") { %>
+                                        <img src="<%= result_tweets[i].imagevdo_name %>" alt="Tweet Image" style="max-width: 100%; max-height: 20rem;">
+                                    <% } %>
                                 </div>
                             </div>
-                            <% } %>
-                                <% } else { %>
-                                    <p class="no-tweets-message">No tweets posted</p>
-                                    <% } %>
+                        <% } %>
+                    <% } else { %>
+                        <p class="no-tweets-message">No tweets posted</p>
+                    <% } %>
+                    
                 </div>
+                
             </div>
         </div>
 
@@ -334,8 +345,8 @@
                                 <%= result[i].username %> - <%= result[i].about %>
                             </p>
                             <form action="/follow/" method="get">
-                            <a href="/follow/<%= result[i].uid %>"
-                                style="text-decoration: none; display: inline-block; padding: 5px 10px; margin-top: 5px; background-color: #1da1f2; color: #fff; border-radius: 5px; font-weight: bold; cursor: pointer; text-align: center; transition: background-color 0.3s ease;">Follow</a>
+                                <a href="/follow/<%= result[i].uid %>"
+                                    style="text-decoration: none; display: inline-block; padding: 5px 10px; margin-top: 5px; background-color: #1da1f2; color: #fff; border-radius: 5px; font-weight: bold; cursor: pointer; text-align: center; transition: background-color 0.3s ease;">Follow</a>
                             </form>
                         </div>
                         <% } %>
@@ -345,36 +356,12 @@
                                 </p>
                                 <% } %>
             </div>
-        
-            
+
+
         </div>
     </div>
 
 
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $("#icon").click(function () {
-                $("#tweet_img").trigger('click');
-            });
-
-        })
-        // const searchButton = document.querySelector('.search-button');
-        // const searchPopup = document.querySelector('.search-popup');
-        // const closeBtn = document.querySelector('.close-btn');
-
-        // searchButton.addEventListener('click', () => {
-        //     searchPopup.style.display = 'block';
-        // });
-
-        // closeBtn.addEventListener('click', () => {
-        //     searchPopup.style.display = 'none';
-        // });
-
-
-    </script>
 </body>
 
 </html>

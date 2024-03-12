@@ -1,0 +1,101 @@
+<!-- updatePass.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Password</title>
+    <style>
+        /* Add your CSS styles here */
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .update-password-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .update-password-form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .update-password-form button {
+            background-color: #1da1f2;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .update-password-form button:hover {
+            background-color: #0F81D5;
+        }
+
+        .back-to-profile {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .back-to-profile a {
+            color: #1da1f2;
+            text-decoration: none;
+        }
+
+        .back-to-profile a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Update Password</h1>
+        <h3 style="color: red;"><%= update_pass_data %></h3>
+        <form action="/update-password-success" method="post" class="update-password-form">
+            <label for="emailMobile">Email/Mobile:</label>
+            <input type="text" id="emailMobile" name="email" placeholder="Enter your email/mobile" required>
+
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="password" placeholder="Enter your new password" required>
+
+            <button type="submit">Update Password</button>
+        </form>
+
+        <div class="back-to-profile">
+            <a href="/profile">Back to Profile</a>
+        </div>
+    </div>
+</body>
+
+</html>

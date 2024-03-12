@@ -16,7 +16,7 @@ async function sendVerificationEmail(email_to) {
         to: email_to,
         from: "jaingeetansh@gmail.com",
         subject: "Verify your email!",
-        html: "<b>Hi, <br> Please click on the link to verify your email id :- <br> <a href=\"http://localhost:9000?" + email_to + "\">Click here</a>"
+        html: "<b>Hi, <br> Please click on the link to verify your email id :- <br> <a href=\"http://localhost:8080?" + email_to + "\">Click here</a>"
     });
     if (info.messageId) {
         return true;
