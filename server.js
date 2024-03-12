@@ -47,12 +47,29 @@ app.get("/search", (req, res) => {
       console.error(err);
       res.status(500).send("Internal Server Error");
     } else {
+        let sql1 = "SELECT tweet.*, user.* FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR tweet.content LIKE CONCAT('%', ?, '%') OR tweet.uid IN (SELECT following_user_id FROM following WHERE following_user_id = ?) ORDER BY tweet.datetime DESC;";
+        db.query(sql1, [req.session.uid, req.session.un, req.session.uid], (error, result, fields) => {
+          let likeCounts = [];
+          result.forEach(tweet => {
+            const tid = tweet.tid;
+            const sql2 = "SELECT COUNT(userLiked) as likeCount FROM tweet_likes WHERE tid = ?";
+            db.query(sql2, [tid], (err, resultFromQuery) => {
+              if (err) {
+                console.log(err);
+                res.status(500).send("Error occurred while processing your request.");
+                return;
+              }
+              likeCounts.push(resultFromQuery[0]);
+              if (likeCounts.length === result.length) {
+                res.render("home", { result_tweets: result, result: rest, search: true, mssg: "", un: req.session.un, tlike: likeCounts });
+              }
+            });
+          });
+          // res.render("home", { result: rest, search: true, mssg: "", result_tweets: result ,un:req.session.un,tlike:[]});
+        });
+      
 
-      let sql1 = "SELECT tweet.*, user.* FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR tweet.content LIKE CONCAT('%', ?, '%') OR tweet.uid IN (SELECT following_user_id FROM following WHERE following_user_id = ?) ORDER BY tweet.datetime DESC;";
-      db.query(sql1, [req.session.uid, req.session.un, req.session.uid], (error, result, fields) => {
 
-        res.render("home", { result: rest, search: true, mssg: "", result_tweets: result ,un:req.session.un,tlike:""});
-      });
     }
   });
 });
@@ -79,22 +96,25 @@ app.post("/login", (req, res) => {
       db.query(sql1, [req.session.uid, req.session.uid, req.session.un], (error, result, fields) => {
         if (error) throw error;
 
-        else {
-          let tid = result[0].tid;
+      if (result.length > 0) {
+          let likeCounts = [];
+          result.forEach(tweet => {
+            const tid = tweet.tid;
+            console.log(tid)
 
-          // const search_str = req.query["search"];
-          // const sql2 = "SELECT tweet.*, user.username FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR tweet.uid IN (SELECT following_user_id FROM following WHERE uid = ?)  OR tweet.content LIKE CONCAT('%@', ?, '%') ORDER BY tweet.datetime DESC;";
-          // db.query(sql2, [search_str], (err, rest, fields) => {
-          //   res.render("home", { result: rest, search: true, mssg: "", result_tweets: result ,un:req.session.un});
-          // });
-          const sql2 = "SELECT COUNT(userLiked) as likeCount FROM tweet_likes WHERE tid = ?";
-          db.query(sql2,[tid],(err,resultFromQuery)=>{
-            if(err) console.log(err);
-            else{
-              res.render("home", { result_tweets: result, result: [], search: false, mssg: "", un: req.session.un, tlike: resultFromQuery });
-            }
+            const sql2 = "SELECT COUNT(userLiked) as likeCount FROM tweet_likes WHERE tid = ?";
+            db.query(sql2, [tid], (err, resultFromQuery) => {
+              if (err) {
+                console.log(err);
+                res.status(500).send("Error occurred while processing your request.");
+                return;
+              }
+              likeCounts.push(resultFromQuery[0]);
+              if (likeCounts.length === result.length) {
+                res.render("home", { result_tweets: result, result: "", search: false, mssg: "", un: req.session.un, tlike: likeCounts });
+              }
+            });
           });
-          
         }
       });
     }
@@ -234,11 +254,8 @@ app.get("/home", (req, res) => {
                 res.status(500).send("Error occurred while processing your request.");
                 return;
               }
-              // Push the like count to the array
               likeCounts.push(resultFromQuery[0]);
-              // Check if all like counts have been fetched
               if (likeCounts.length === result.length) {
-                // Render the home page with all the data
                 res.render("home", { result_tweets: result, result: "", search: false, mssg: msg, un: req.session.un, tlike: likeCounts });
               }
             });
