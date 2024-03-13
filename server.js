@@ -100,7 +100,6 @@ app.post("/login", (req, res) => {
           let likeCounts = [];
           result.forEach(tweet => {
             const tid = tweet.tid;
-            console.log(tid)
 
             const sql2 = "SELECT COUNT(userLiked) as likeCount FROM tweet_likes WHERE tid = ?";
             db.query(sql2, [tid], (err, resultFromQuery) => {
@@ -245,7 +244,6 @@ app.get("/home", (req, res) => {
           // Iterate through each tweet to fetch its like count
           result.forEach(tweet => {
             const tid = tweet.tid;
-            console.log(tid)
 
             const sql2 = "SELECT COUNT(userLiked) as likeCount FROM tweet_likes WHERE tid = ?";
             db.query(sql2, [tid], (err, resultFromQuery) => {
