@@ -22,7 +22,7 @@ app.use(express.static(__dirname + "/public"));
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './public');
-  },
+  },  
   filename: (req, file, cb) => {
     cb(null, "./uploads/" + file.originalname);
   }
@@ -95,26 +95,8 @@ app.post("/login", (req, res) => {
       const sql1 = "SELECT tweet.*, user.username FROM tweet INNER JOIN user ON tweet.uid = user.uid WHERE tweet.uid = ? OR tweet.uid IN (SELECT following_user_id FROM following WHERE uid = ?)  OR tweet.content LIKE CONCAT('%@', ?, '%') ORDER BY tweet.datetime DESC;";
       db.query(sql1, [req.session.uid, req.session.uid, req.session.un], (error, result, fields) => {
         if (error) throw error;
+        res.redirect("/home")
 
-      if (result.length > 0) {
-          let likeCounts = [];
-          result.forEach(tweet => {
-            const tid = tweet.tid;
-
-            const sql2 = "SELECT COUNT(userLiked) as likeCount FROM tweet_likes WHERE tid = ?";
-            db.query(sql2, [tid], (err, resultFromQuery) => {
-              if (err) {
-                console.log(err);
-                res.status(500).send("Error occurred while processing your request.");
-                return;
-              }
-              likeCounts.push(resultFromQuery[0]);
-              if (likeCounts.length === result.length) {
-                res.render("home", { result_tweets: result, result: "", search: false, mssg: "", un: req.session.un, tlike: likeCounts });
-              }
-            });
-          });
-        }
       });
     }
   });
@@ -289,7 +271,7 @@ app.post("/update-password-success", (req, res) => {
     if (err) throw err;
     if (result.affectedRows > 0) {
       // res.redirect('/profile');
-      res.render('profile',{profile_data:"Password updated successfully..!"})
+      res.redirect('/')
     } else {
       res.render("updatePass", { update_pass_data: "Error updating password..!" });
     }
@@ -317,12 +299,7 @@ app.get("/profile", (req, res) => {
 
 
 
-const multerMiddleware = multer({
-  storage: storage,
-}).fields([
-  { name: "profile_image", maxCount: 1 },
-  { name: "banner_image", maxCount: 1 },
-]);
+const multerMiddleware = multer({storage: storage}).fields([{ name: "profile_image", maxCount: 1 },{ name: "banner_image", maxCount: 1 }]);
 
 // Assuming profile_data is retrieved from the database
 
